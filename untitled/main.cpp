@@ -6,6 +6,7 @@
 #include <QSpacerItem>
 #include <QPushButton>
 #include <QColorDialog>
+#include <QFontDialog>
 #include <QPalette>
 
 int main(int argc, char *argv[]) {
@@ -17,7 +18,7 @@ int main(int argc, char *argv[]) {
     // 創建 QTabWidget
     QTabWidget *tabWidget = new QTabWidget;
 
-    // 創建第一個標籤頁
+    // 創建第一個標籤頁 (隊長)
     QWidget *tab1 = new QWidget;
     QVBoxLayout *layout1 = new QVBoxLayout;
 
@@ -48,7 +49,7 @@ int main(int argc, char *argv[]) {
     tab1->setLayout(layout1);
     tabWidget->addTab(tab1, "隊長");
 
-    // 創建第二個標籤頁
+    // 創建第二個標籤頁 (組員1)
     QWidget *tab2 = new QWidget;
     QVBoxLayout *layout2 = new QVBoxLayout;
 
@@ -75,11 +76,34 @@ int main(int argc, char *argv[]) {
     tab2->setLayout(layout2);
     tabWidget->addTab(tab2, "組員1");
 
-    // 創建第三個標籤頁，不放內容
+    // 創建第三個標籤頁 (組員2)
     QWidget *tab3 = new QWidget;
+    QVBoxLayout *layout3 = new QVBoxLayout;
+
+    // 創建按鈕來選擇字體樣式
+    QPushButton *fontButton = new QPushButton("選擇字體樣式");
+
+    // 按鈕點擊事件
+    QObject::connect(fontButton, &QPushButton::clicked, [=]() {
+        // 打開字體選擇器
+        bool ok;
+        QFont font = QFontDialog::getFont(&ok, window);
+
+        // 如果用戶選擇了字體，則應用到隊長頁面的標籤
+        if (ok) {
+            label1->setFont(font);
+            label2->setFont(font);
+            label3->setFont(font);
+            label4->setFont(font);
+        }
+    });
+
+    // 將按鈕添加到佈局中
+    layout3->addWidget(fontButton);
+    tab3->setLayout(layout3);
     tabWidget->addTab(tab3, "組員2");
 
-    // 創建第四個標籤頁，不放內容
+    // 創建第四個標籤頁，不放內容 (組員3)
     QWidget *tab4 = new QWidget;
     tabWidget->addTab(tab4, "組員3");
 
