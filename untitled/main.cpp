@@ -4,6 +4,9 @@
 #include <QVBoxLayout>
 #include <QWidget>
 #include <QSpacerItem>
+#include <QPushButton>
+#include <QColorDialog>
+#include <QPalette>
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
@@ -45,8 +48,31 @@ int main(int argc, char *argv[]) {
     tab1->setLayout(layout1);
     tabWidget->addTab(tab1, "隊長");
 
-    // 創建第二個標籤頁，不放內容
+    // 創建第二個標籤頁
     QWidget *tab2 = new QWidget;
+    QVBoxLayout *layout2 = new QVBoxLayout;
+
+    // 創建按鈕
+    QPushButton *button = new QPushButton("color select");
+
+    // 按鈕點擊事件
+    QObject::connect(button, &QPushButton::clicked, [=]() {
+        // 打開顏色選擇器
+        QColor color = QColorDialog::getColor(Qt::blue, window, "color select");
+
+        // 如果用戶選擇了有效顏色，改變隊長標籤的字體顏色
+        if (color.isValid()) {
+            QString colorName = color.name();  // 獲取選擇的顏色名稱
+            label1->setStyleSheet(QString("color: %1;").arg(colorName));
+            label2->setStyleSheet(QString("color: %1;").arg(colorName));
+            label3->setStyleSheet(QString("color: %1;").arg(colorName));
+            label4->setStyleSheet(QString("color: %1;").arg(colorName));
+        }
+    });
+
+    // 將按鈕添加到佈局中
+    layout2->addWidget(button);
+    tab2->setLayout(layout2);
     tabWidget->addTab(tab2, "組員1");
 
     // 創建第三個標籤頁，不放內容
