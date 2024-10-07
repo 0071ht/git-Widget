@@ -8,6 +8,8 @@
 #include <QColorDialog>
 #include <QFontDialog>
 #include <QPalette>
+#include <QFileDialog>
+
 
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
@@ -103,8 +105,30 @@ int main(int argc, char *argv[]) {
     tab3->setLayout(layout3);
     tabWidget->addTab(tab3, "組員2");
 
-    // 創建第四個標籤頁，不放內容 (組員3)
+
+    // 創建第四個標籤頁 (組員3)
     QWidget *tab4 = new QWidget;
+    QVBoxLayout *layout4 = new QVBoxLayout;
+
+    // 創建按鈕來選擇檔案路徑
+    QPushButton *fileButton = new QPushButton("選擇檔案路徑");
+
+    // 按鈕點擊事件
+    QObject::connect(fileButton, &QPushButton::clicked, [=]() {
+        // 打開檔案選擇對話框
+        QString filePath = QFileDialog::getOpenFileName(window, "選擇檔案");
+
+        if (!filePath.isEmpty()) {
+            label1->setText(filePath);  // 顯示檔案路徑
+            label2->setText("");        // 清空其他標籤
+            label3->setText("");
+            label4->setText("");
+        }
+    });
+
+    // 將按鈕添加到佈局中
+    layout4->addWidget(fileButton);
+    tab4->setLayout(layout4);
     tabWidget->addTab(tab4, "組員3");
 
     // 設置主窗口的佈局
@@ -117,3 +141,4 @@ int main(int argc, char *argv[]) {
 
     return app.exec();
 }
+
